@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "home",
+    "title": "Empowering people. Strengthening families. Building purposeful futures.",
+    "eyebrow": "Purpose-led growth, together",
+    "intro": "Edified Services supports young people, parents, learners and organisations through thoughtful coaching, counselling, training and mentorship.",
+    "body": "",
+    "published": true
+  },
+  {
+    "slug": "courses",
+    "title": "Programmes for purposeful, real-world growth.",
+    "eyebrow": "Learning for life",
+    "intro": "Discover educational experiences for young people, caregivers and professionals. Programme content shown here is introductory; operational details await confirmation.",
+    "body": "",
+    "published": true
+  },
+  {
+    "slug": "about-us",
+    "title": "Growth becomes meaningful when it is understood, supported and shared.",
+    "eyebrow": "About Edified",
+    "intro": "Edified Services is presented as a people-development organisation serving individuals, families, learning communities and organisations.",
+    "body": "",
+    "published": true
+  },
+  {
+    "slug": "our-services",
+    "title": "Support for the places where people live, learn and lead.",
+    "eyebrow": "Our services",
+    "intro": "Explore distinct coaching, counselling, training and consultancy services, each described without unsupported promises or one-size-fits-all outcomes.",
+    "body": "",
+    "published": true
+  }
+]

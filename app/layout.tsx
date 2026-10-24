@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   },
   description:
     "Thoughtful coaching, counselling, training and mentorship for young people, families and organisations.",
+  icons: {
+    icon: "/images/edifiedlogo.jpg",
+    apple: "/images/edifiedlogo.jpg",
+  },
 };
 
 export default function RootLayout({

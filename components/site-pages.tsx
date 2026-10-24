@@ -1,9 +1,12 @@
 "use client"
 
-import { useEffect, useMemo, useState, type ReactNode } from "react"
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react"
 import NextLink from "next/link"
-import { usePathname } from "next/navigation"
+import Image from "next/image"
+import { usePathname, useRouter } from "next/navigation"
 import { courses, generalFaqs, photos, services, type Course } from "@/lib/data"
+import type { PageContent } from "@/lib/page-content"
+import { initialPages } from "@/lib/page-content"
 import Button, { buttonVariants } from "@/components/ui/button"
 
 type IconName = "arrow" | "building" | "check" | "chevron" | "compass" | "heart" | "home" | "leaf" | "menu" | "people" | "path" | "school" | "search" | "spark" | "x"
@@ -150,12 +153,26 @@ const navItems = [
   { label: "About Us", href: "/about-us/" },
   { label: "Our Services", href: "/our-services/" },
 ]
+const customNavItems = initialPages
+  .filter(
+    (page) =>
+      page.published &&
+      !["home", "courses", "about-us", "our-services"].includes(page.slug),
+  )
+  .map((page) => ({ label: page.title, href: `/pages/${page.slug}` }))
+const allNavItems = [...navItems, ...customNavItems]
 
 function Wordmark() {
   return (
-    <span className="wordmark" aria-label="Edified Services">
-      <span className="wordmark__mark">E</span>
-      <span>
+    <span className="wordmark">
+      <Image
+        src="/images/edifiedlogo.jpg"
+        alt=""
+        width={640}
+        height={640}
+        className="wordmark__logo"
+      />
+      <span className="wordmark__text">
         <strong>EDIFIED</strong>
         <small>SERVICES</small>
       </span>
@@ -165,16 +182,60 @@ function Wordmark() {
 
 export function Header() {
   const currentPath = usePathname()
+  const router = useRouter()
   const path = currentPath.endsWith("/") ? currentPath : `${currentPath}/`
   const [open, setOpen] = useState(false)
+  const [signedIn, setSignedIn] = useState(false)
+  const [logoutError, setLogoutError] = useState("")
+
+  const refreshSession = useCallback(async () => {
+    try {
+      const response = await fetch("/api/portal/auth", { cache: "no-store" })
+      const result = await response.json()
+      setSignedIn(response.ok && Boolean(result.user))
+    } catch {
+      setSignedIn(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => void refreshSession(), 0)
+    window.addEventListener("portal-auth-change", refreshSession)
+    return () => {
+      window.clearTimeout(timeoutId)
+      window.removeEventListener("portal-auth-change", refreshSession)
+    }
+  }, [refreshSession, currentPath])
+
+  async function logout() {
+    try {
+      const response = await fetch("/api/portal/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "logout" }),
+      })
+      if (!response.ok) {
+        throw new Error("Could not sign out. Please try again.")
+      }
+      setLogoutError("")
+      setSignedIn(false)
+      router.push("/dashboard")
+    } catch (error) {
+      setLogoutError(
+        error instanceof Error ? error.message : "Could not sign out. Please try again.",
+      )
+    }
+  }
+
   return (
     <header className="site-header">
+      {logoutError && <p className="nav-logout-error" role="alert">{logoutError}</p>}
       <div className="container nav-wrap">
         <Link href="/" className="logo-link" onClick={() => setOpen(false)}>
           <Wordmark />
         </Link>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          {navItems.map((item) => (
+          {allNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -189,9 +250,13 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <Link href="/dashboard" className="login-button">
-          Login
-        </Link>
+        {signedIn ? (
+          <button type="button" className="login-button" onClick={() => void logout()}>
+            Logout
+          </button>
+        ) : (
+          <Link href="/dashboard" className="login-button">Login</Link>
+        )}
         <button
           className="menu-button"
           type="button"
@@ -210,7 +275,7 @@ export function Header() {
           aria-label="Mobile navigation"
         >
           <div className="container">
-            {navItems.map((item) => (
+            {allNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -225,13 +290,23 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/dashboard"
-              onClick={() => setOpen(false)}
-              className="mobile-login"
-            >
-              Login
-            </Link>
+            {signedIn ? (
+              <button
+                type="button"
+                onClick={() => { setOpen(false); void logout() }}
+                className="mobile-login"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="mobile-login"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </nav>
       )}
@@ -411,7 +486,11 @@ export function Footer() {
         </div>
         <div>
           <h3>Explore</h3>
-          {[...navItems, { label: "Login", href: "/dashboard" }].map((item) => (
+          {[
+            ...allNavItems,
+            { label: "Login", href: "/dashboard" },
+            { label: "Admin", href: "/admin" },
+          ].map((item) => (
             <Link key={item.href} href={item.href}>
               {item.label}
             </Link>
@@ -445,7 +524,39 @@ export function Footer() {
   )
 }
 
-export function HomePage() {
+export function HomePage({ page }: { page: PageContent }) {
+  const initiatives: {
+    title: string
+    description: string
+    icon: IconName
+    action: string
+    href: string
+  }[] = [
+    {
+      title: "Edified CBO",
+      description:
+        "Community-centred programmes connecting young people and families with learning, wellbeing and mentorship.",
+      icon: "people",
+      action: "Learn about community work",
+      href: "/about-us/#community",
+    },
+    {
+      title: "Edified School Fund",
+      description:
+        "Raising awareness of education needs and helping individuals and partners find a way to seek or offer support.",
+      icon: "school",
+      action: "Ask about support",
+      href: "/our-services/#enquire",
+    },
+    {
+      title: "Edified Sports Team",
+      description:
+        "Building visibility for the team and welcoming publicity and sponsorship conversations.",
+      icon: "spark",
+      action: "Discuss sponsorship",
+      href: "/our-services/#enquire",
+    },
+  ]
   const audiences = [
     [
       "01",
@@ -477,19 +588,11 @@ export function HomePage() {
       <section className="hero">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <span className="eyebrow">Purpose-led growth, together</span>
+            <span className="eyebrow">{page.eyebrow}</span>
             <h1>
-              Empowering people.
-              <br />
-              <em>Strengthening families.</em>
-              <br />
-              Building purposeful futures.
+              {page.title}
             </h1>
-            <p>
-              Edified Services supports young people, parents, learners and
-              organisations through thoughtful coaching, counselling, training
-              and mentorship.
-            </p>
+            <p>{page.intro}</p>
             <div className="button-row">
               <ButtonLink href="/our-services/">
                 Explore our services
@@ -509,7 +612,7 @@ export function HomePage() {
             <div className="hero-image">
               <img
                 src={photos.hero}
-                alt="A small group learning together from a shared book"
+                alt="Young learners reviewing notes together"
               />
             </div>
             <div className="hero-stamp">
@@ -526,6 +629,7 @@ export function HomePage() {
           </div>
         </div>
       </section>
+      {page.body && <PageBody page={page} />}
 
       <section className="approach-strip">
         <div className="container">
@@ -586,30 +690,40 @@ export function HomePage() {
               title="Human development with warmth, clarity and purpose."
             />
             <p className="lead">
-              Edified Services brings together education, reflection and
-              relationship-centred support for individuals, families and
-              organisations.
+              Edified Services supports young people, parents, learners and
+              organisations through thoughtful coaching, counselling, training
+              and mentorship.
             </p>
             <p>
-              This development site intentionally avoids unverified claims about
-              the organisation’s history, registration or impact. Confirmed
-              background information will be added before publication.
+              We create supportive opportunities for people to learn, grow and
+              live out their purpose.
             </p>
-            <div className="principles">
-              <span>
-                <Icon name="check" size={18} /> Person-centred
-              </span>
-              <span>
-                <Icon name="check" size={18} /> Context-aware
-              </span>
-              <span>
-                <Icon name="check" size={18} /> Growth-focused
-              </span>
-            </div>
             <ButtonLink href="/about-us/" variant="secondary">
               Learn more about us
             </ButtonLink>
           </div>
+        </div>
+        <div className="container about-pillars">
+          {[
+            {
+              title: "Vision",
+              text: "A generation living out its purpose and contributing positively to families and communities.",
+            },
+            {
+              title: "Mission",
+              text: "To support young people, parents, learners and organisations through thoughtful coaching, counselling, training and mentorship.",
+            },
+            {
+              title: "Values",
+              text: "Care, integrity, growth and shared responsibility guide how we listen, learn and work alongside others.",
+            },
+          ].map((pillar) => (
+            <article className="about-pillar" key={pillar.title}>
+              <span className="eyebrow">Our {pillar.title.toLowerCase()}</span>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.text}</p>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -657,40 +771,30 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section community-section">
-        <div className="container community-grid">
-          <div>
-            <SectionHeading
-              eyebrow="Community & social impact"
-              title="Strengthening the circles around every person."
-            />
-            <p className="lead">
-              Edified’s service themes extend into community development through
-              education, youth mentorship, life skills, family support and
-              mental wellness.
-            </p>
-            <p>
-              Specific initiatives, partnerships and outcomes will be published
-              once verified. Proposed work will always be clearly distinguished
-              from established activity.
-            </p>
-            <ButtonLink href="/about-us/#community" variant="teal">
-              Our community approach
-            </ButtonLink>
-          </div>
-          <div className="community-image">
-            <img
-              src={photos.community}
-              alt="A community group spending time together outdoors"
-              loading="lazy"
-            />
-            <div>
-              <strong>Community is a practice.</strong>
-              <span>
-                It grows through listening, participation and shared
-                responsibility.
-              </span>
-            </div>
+      <section
+        id="community-initiatives"
+        className="section section--warm community-section"
+      >
+        <div className="container">
+          <SectionHeading
+            eyebrow="Community initiatives"
+            title="Creating more ways to learn, participate and thrive."
+            text="Explore Edified’s community initiatives and find out how to raise awareness, seek support or get involved."
+          />
+          <div className="initiative-grid">
+            {initiatives.map((initiative) => (
+              <article className="initiative-card" key={initiative.title}>
+                <span className="initiative-card__icon">
+                  <Icon name={initiative.icon} size={25} />
+                </span>
+                <h3>{initiative.title}</h3>
+                <p>{initiative.description}</p>
+                <Link href={initiative.href} className="text-link">
+                  {initiative.action}
+                  <Icon name="arrow" size={17} />
+                </Link>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -754,27 +858,83 @@ function PageHero({
   title,
   text,
   image,
+  page,
 }: {
   eyebrow: string
   title: string
   text: string
   image?: string
+  page?: PageContent
 }) {
   return (
-    <section className="page-hero">
-      <div className="container page-hero__grid">
-        <div>
-          <span className="eyebrow eyebrow--light">{eyebrow}</span>
-          <h1>{title}</h1>
-          <p>{text}</p>
+    <>
+      <section className="page-hero">
+        <div className="container page-hero__grid">
+          <div>
+            <span className="eyebrow eyebrow--light">{page?.eyebrow || eyebrow}</span>
+            <h1>{page?.title || title}</h1>
+            <p>{page?.intro || text}</p>
+          </div>
+          {image && <img src={image} alt="" />}
         </div>
-        {image && <img src={image} alt="" />}
+      </section>
+      {page?.body && <PageBody page={page} />}
+    </>
+  )
+}
+
+function PageBody({ page }: { page: PageContent }) {
+  const blocks = page.body
+    .trim()
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .filter(Boolean)
+
+  if (!blocks.length) return null
+  return (
+    <section className="section cms-content">
+      <div className="container">
+        {blocks.map((block, index) => {
+          const heading = block.match(/^(#{2,3})\s+(.+)$/)
+          if (heading) {
+            return heading[1].length === 2 ? (
+              <h2 key={index}>{heading[2]}</h2>
+            ) : (
+              <h3 key={index}>{heading[2]}</h3>
+            )
+          }
+          const lines = block.split("\n")
+          if (lines.every((line) => /^\s*[-*]\s+/.test(line))) {
+            return (
+              <ul key={index}>
+                {lines.map((line, lineIndex) => (
+                  <li key={lineIndex}>{line.replace(/^\s*[-*]\s+/, "")}</li>
+                ))}
+              </ul>
+            )
+          }
+          return <p key={index}>{block}</p>
+        })}
       </div>
     </section>
   )
 }
 
-export function CoursesPage() {
+export function CmsPage({ page }: { page: PageContent }) {
+  return (
+    <main id="main">
+      <Breadcrumbs items={[{ label: page.title }]} />
+      <PageHero
+        eyebrow={page.eyebrow || "Edified Services"}
+        title={page.title}
+        text={page.intro}
+        page={page}
+      />
+    </main>
+  )
+}
+
+export function CoursesPage({ page }: { page: PageContent }) {
   const [query, setQuery] = useState("")
   const [category, setCategory] = useState("All")
   const filtered = useMemo(
@@ -795,6 +955,7 @@ export function CoursesPage() {
         eyebrow="Learning for life"
         title="Programmes for purposeful, real-world growth."
         text="Discover educational experiences for young people, caregivers and professionals. Programme content shown here is introductory; operational details await confirmation."
+        page={page}
       />
       <section className="section catalogue">
         <div className="container">
@@ -811,7 +972,13 @@ export function CoursesPage() {
           <div className="filters">
             <label className="search-field">
               <span className="sr-only">Search courses</span>
-              <Icon name="search" />
+              <Image
+                src="/images/edifiedlogo.jpg"
+                alt=""
+                width={640}
+                height={640}
+                className="search-field__logo"
+              />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -1007,7 +1174,7 @@ export function CourseDetailPage({ course }: { course: Course }) {
   )
 }
 
-export function AboutPage() {
+export function AboutPage({ page }: { page: PageContent }) {
   return (
     <main id="main">
       <Breadcrumbs items={[{ label: "About Us" }]} />
@@ -1016,6 +1183,7 @@ export function AboutPage() {
         title="Growth becomes meaningful when it is understood, supported and shared."
         text="Edified Services is presented as a people-development organisation serving individuals, families, learning communities and organisations."
         image={photos.about}
+        page={page}
       />
       <section className="section">
         <div className="container editorial-grid editorial-grid--reverse">
@@ -1143,7 +1311,7 @@ export function AboutPage() {
   )
 }
 
-export function ServicesPage() {
+export function ServicesPage({ page }: { page: PageContent }) {
   const groups = [
     {
       id: "individuals",
@@ -1171,6 +1339,7 @@ export function ServicesPage() {
         eyebrow="Our services"
         title="Support for the places where people live, learn and lead."
         text="Explore distinct coaching, counselling, training and consultancy services, each described without unsupported promises or one-size-fits-all outcomes."
+        page={page}
       />
       <section className="section">
         <div className="container">

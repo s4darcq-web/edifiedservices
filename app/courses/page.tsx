@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { CoursesPage } from "@/components/site-pages";
+import { getPageContent } from "@/lib/page-content";
 
-export const metadata: Metadata = {
-  title: "Courses",
-  description:
-    "Explore Edified Services learning programmes for young people, caregivers and professionals.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = getPageContent("courses");
+  return page
+    ? { title: page.title, description: page.intro }
+    : { title: "Page not found" };
+}
 
 export default function Page() {
-  return <CoursesPage />;
+  const page = getPageContent("courses");
+  if (!page) notFound();
+  return <CoursesPage page={page} />;
 }

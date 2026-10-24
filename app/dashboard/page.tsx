@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import { DashboardPage } from "@/components/site-pages";
+import type { Metadata } from "next"
+import PortalDashboard from "@/components/portal-dashboard"
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Learning Portal",
   robots: { index: false, follow: false },
-};
+}
 
 export default function Page() {
-  return <DashboardPage />;
+  return <PortalDashboard />
 }

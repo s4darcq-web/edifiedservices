@@ -18,7 +18,7 @@ export type Service = {
 }
 
 export const photos = {
-  hero: "https://images.unsplash.com/photo-1739302750691-59c12d251139?auto=format&fit=crop&w=1400&q=85",
+  hero: "https://images.unsplash.com/photo-1761370981247-1dfd749ec96b?auto=format&fit=crop&w=1400&q=85",
   about:
     "https://images.unsplash.com/photo-1620237181627-6a433bb1538e?auto=format&fit=crop&w=1200&q=85",
   community:
