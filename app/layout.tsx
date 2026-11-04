@@ -4,11 +4,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Edified Services | Purpose-led growth",
+    default: "Edified Services | The Hub for Children and Youth Wellness",
     template: "%s | Edified Services",
   },
   description:
-    "Thoughtful coaching, counselling, training and mentorship for young people, families and organisations.",
+    "Raising an edified generation living out its purpose. Services for families of children and youth aged 8–25 years.",
   icons: {
     icon: "/images/edifiedlogo.jpg",
     apple: "/images/edifiedlogo.jpg",

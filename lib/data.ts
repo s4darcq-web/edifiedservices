@@ -105,67 +105,67 @@ export const courses: Course[] = [
 
 export const services: Service[] = [
   {
-    title: "Children, Teens & Youth Life Coaching",
+    title: "Children and Youth Life Coaching and Mentorship",
     description:
-      "Age-aware coaching conversations that encourage reflection, responsibility and purposeful growth.",
+      "Life coaching and mentorship for children and young people as they explore their strengths, choices and purpose.",
     group: "Individuals & Families",
     icon: "spark",
   },
   {
-    title: "Parenting Consultations",
+    title: "Psychological Counseling and Consultancy",
     description:
-      "A supportive space for parents and caregivers to consider family needs, communication and next steps.",
-    group: "Individuals & Families",
-    icon: "home",
-  },
-  {
-    title: "Psychological Counselling",
-    description:
-      "Confidential, person-centred support delivered within confirmed professional scope and appropriate referral pathways.",
+      "Psychological counseling and consultancy for children, youth, caregivers and families.",
     group: "Individuals & Families",
     icon: "heart",
   },
   {
-    title: "Leadership Training",
+    title: "Parenting Workshops",
     description:
-      "Practical learning experiences focused on self-leadership, communication and responsible influence.",
-    group: "Organisations",
-    icon: "compass",
+      "Workshops for parents and caregivers supporting children and young people.",
+    group: "Individuals & Families",
+    icon: "home",
   },
   {
-    title: "Team Building & Coaching",
+    title: "Mediation",
     description:
-      "Facilitated experiences designed to strengthen shared understanding, collaboration and team reflection.",
-    group: "Organisations",
+      "Mediation support to help people work through disagreements and identify a way forward.",
+    group: "Individuals & Families",
     icon: "people",
   },
   {
-    title: "Organisational Consultancy",
+    title: "Musical Talents and Skills Development",
     description:
-      "Context-led consultation to help organisations clarify people-development needs and suitable interventions.",
-    group: "Organisations",
-    icon: "building",
+      "Opportunities for children and youth to develop musical talents and practical skills.",
+    group: "Schools & Education",
+    icon: "spark",
   },
   {
-    title: "Career Coaching",
+    title: "Child-Based Institutional Coaching and Consultancy",
     description:
-      "Structured guidance to help individuals explore strengths, direction and informed career decisions.",
-    group: "Individuals & Families",
-    icon: "path",
-  },
-  {
-    title: "Peer-to-Peer School Mentorship",
-    description:
-      "Mentorship frameworks that can help schools cultivate peer support, responsibility and positive participation.",
+      "Coaching and consultancy for institutions working with and supporting children.",
     group: "Schools & Education",
     icon: "school",
   },
   {
-    title: "Mental Health Clubs Establishment",
+    title: "Nutrition Consultancy",
     description:
-      "Guidance for schools exploring safe, educational wellbeing clubs with appropriate oversight and safeguarding.",
-    group: "Schools & Education",
+      "Nutrition consultancy for children, youth and families.",
+    group: "Individuals & Families",
     icon: "leaf",
+  },
+  {
+    title: "Leadership Training and Coaching",
+    description:
+      "Leadership training and coaching for children, youth, caregivers and groups.",
+    group: "Organisations",
+    icon: "compass",
+  },
+  {
+    title: "Bee Keeping & Products",
+    description:
+      "Bee keeping and related products as part of Edified's service offering.",
+    group: "Organisations",
+    icon: "building",
   },
 ]
 
@@ -183,7 +183,7 @@ export const generalFaqs = [
   {
     question: "How do I enquire about a service?",
     answer:
-      "Choose a service or course and use the enquiry link. Contact details are awaiting organisational confirmation, so this development version does not submit or store personal information.",
+      "Call Edified Services on +254 751 687 372 or email edifiedservices.company@gmail.com.",
   },
   {
     question: "Is counselling the same as coaching?",

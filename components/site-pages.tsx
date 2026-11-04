@@ -360,8 +360,13 @@ function ServiceCard({
   service: typeof services[number]
   index: number
 }) {
+  const serviceId = service.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+
   return (
-    <article className="service-card">
+    <article id={serviceId} className="service-card">
       <div className="card-number">0{index + 1}</div>
       <div className="icon-disc">
         <Icon name={service.icon as IconName} size={24} />
@@ -369,7 +374,7 @@ function ServiceCard({
       <h3>{service.title}</h3>
       <p>{service.description}</p>
       <Link
-        href={`/our-services/#${service.title.toLowerCase().replace(/\s+/g, "-")}`}
+        href={`/our-services/#${serviceId}`}
         className="text-link"
       >
         Learn more <Icon name="arrow" size={17} />
@@ -478,11 +483,8 @@ export function Footer() {
       <div className="container footer-grid">
         <div className="footer-brand">
           <Wordmark />
-          <p>
-            Coaching, counselling, education and mentorship designed to support
-            purposeful growth.
-          </p>
-          <small>Social profiles will be added after verification.</small>
+          <p>The Hub for Children and Youth Wellness.</p>
+          <small>Raising an edified generation living out its purpose.</small>
         </div>
         <div>
           <h3>Explore</h3>
@@ -505,13 +507,10 @@ export function Footer() {
         </div>
         <div>
           <h3>Contact</h3>
-          <p>
-            Official phone, email and location details are awaiting
-            confirmation.
-          </p>
-          <Link href="/our-services/#enquire" className="footer-action">
-            Enquiry information <Icon name="arrow" size={17} />
-          </Link>
+          <a href="tel:+254751687372">+254 751 687 372</a>
+          <a href="mailto:edifiedservices.company@gmail.com">
+            edifiedservices.company@gmail.com
+          </a>
         </div>
       </div>
       <div className="container footer-bottom">
@@ -561,7 +560,7 @@ export function HomePage({ page }: { page: PageContent }) {
     [
       "01",
       "Children, teens & young adults",
-      "Coaching, mentorship and learning designed around formative life stages.",
+      "Families of children and youth aged 8–25 years are our primary target group.",
       "spark",
     ],
     [
@@ -707,15 +706,15 @@ export function HomePage({ page }: { page: PageContent }) {
           {[
             {
               title: "Vision",
-              text: "A generation living out its purpose and contributing positively to families and communities.",
+              text: "To be the Empowerment Entity of Choice for Children, Youth and Caregivers.",
             },
             {
               title: "Mission",
-              text: "To support young people, parents, learners and organisations through thoughtful coaching, counselling, training and mentorship.",
+              text: "Raising an Edified Generation Living out Its Purpose.",
             },
             {
-              title: "Values",
-              text: "Care, integrity, growth and shared responsibility guide how we listen, learn and work alongside others.",
+              title: "Core Values",
+              text: "Integrity, Creativity, Dignity, Family and Partnerships.",
             },
           ].map((pillar) => (
             <article className="about-pillar" key={pillar.title}>
@@ -816,7 +815,7 @@ export function HomePage({ page }: { page: PageContent }) {
               [
                 "02",
                 "Make an enquiry",
-                "Share what you are looking for once verified contact channels are published.",
+                "Call or email Edified Services to share what you are looking for.",
               ],
               [
                 "03",
@@ -832,8 +831,8 @@ export function HomePage({ page }: { page: PageContent }) {
             ))}
           </div>
           <p className="verification-note">
-            This proposed journey will be confirmed with the organisation before
-            publication.
+            The next steps and service details can be discussed directly with
+            Edified Services.
           </p>
         </div>
       </section>
@@ -1180,8 +1179,8 @@ export function AboutPage({ page }: { page: PageContent }) {
       <Breadcrumbs items={[{ label: "About Us" }]} />
       <PageHero
         eyebrow="About Edified"
-        title="Growth becomes meaningful when it is understood, supported and shared."
-        text="Edified Services is presented as a people-development organisation serving individuals, families, learning communities and organisations."
+        title="About Edified Services"
+        text="Our vision is to be the Empowerment Entity of Choice for Children, Youth and Caregivers."
         image={photos.about}
         page={page}
       />
@@ -1190,27 +1189,26 @@ export function AboutPage({ page }: { page: PageContent }) {
           <div className="editorial-copy">
             <SectionHeading
               eyebrow="Who we are"
-              title="A thoughtful space for learning and development."
+              title="Raising an edified generation living out its purpose."
             />
             <p className="lead">
-              The Edified offering brings coaching, counselling, training,
-              mentorship and consultation into one connected ecosystem of
-              support.
+              Edified Services is the Hub for Children and Youth Wellness,
+              serving families of children and youth aged 8–25 years.
             </p>
             <p>
-              Official organisational history, location, legal status, mission
-              and vision have not been supplied. These details are intentionally
-              omitted rather than inferred, and can be added through the same
-              content model once verified.
+              Our mission is to raise an Edified Generation Living out Its
+              Purpose, with services that support children, youth and
+              caregivers.
             </p>
           </div>
           <div className="values-panel">
-            <span>Our current design principles</span>
+            <span>Our core values</span>
             {[
-              ["01", "See the whole person"],
-              ["02", "Respect context"],
-              ["03", "Support informed choice"],
-              ["04", "Grow with purpose"],
+              ["01", "Integrity"],
+              ["02", "Creativity"],
+              ["03", "Dignity"],
+              ["04", "Family"],
+              ["05", "Partnerships"],
             ].map(([n, text]) => (
               <div key={n}>
                 <small>{n}</small>
@@ -1321,7 +1319,7 @@ export function ServicesPage({ page }: { page: PageContent }) {
     },
     {
       id: "schools",
-      title: "Schools & Educational Institutions",
+      title: "Schools & Education",
       text: "Learning and mentorship frameworks that can complement student development and school wellbeing.",
       icon: "school",
     },
@@ -1337,8 +1335,8 @@ export function ServicesPage({ page }: { page: PageContent }) {
       <Breadcrumbs items={[{ label: "Our Services" }]} />
       <PageHero
         eyebrow="Our services"
-        title="Support for the places where people live, learn and lead."
-        text="Explore distinct coaching, counselling, training and consultancy services, each described without unsupported promises or one-size-fits-all outcomes."
+        title="Services for Children, Youth and Families"
+        text="Explore life coaching, psychological counseling, parenting workshops, talent development, leadership, institutional coaching, nutrition consultancy, mediation, and bee keeping products."
         page={page}
       />
       <section className="section">
@@ -1427,7 +1425,8 @@ export function ServicesPage({ page }: { page: PageContent }) {
             ))}
           </div>
           <p className="verification-note">
-            This process is indicative and awaiting organisational confirmation.
+            Contact Edified Services to discuss your needs and agree on
+            appropriate next steps.
           </p>
         </div>
       </section>
@@ -1444,15 +1443,16 @@ export function ServicesPage({ page }: { page: PageContent }) {
         <div className="container compact-cta">
           <div>
             <span className="eyebrow eyebrow--light">Make an enquiry</span>
-            <h2>Let’s identify a suitable next step.</h2>
+            <h2>Let’s talk about how we can support you.</h2>
             <p>
-              Official contact channels have not yet been verified. This preview
-              does not collect, submit or store personal information.
+              Call{" "}
+              <a href="tel:+254751687372">+254 751 687 372</a> or email{" "}
+              <a href="mailto:edifiedservices.company@gmail.com">
+                edifiedservices.company@gmail.com
+              </a>
+              .
             </p>
           </div>
-          <ButtonLink href="#contact-details" variant="light">
-            Contact details status
-          </ButtonLink>
         </div>
       </section>
     </main>

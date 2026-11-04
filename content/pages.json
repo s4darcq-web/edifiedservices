@@ -1,9 +1,9 @@
 [
   {
     "slug": "home",
-    "title": "Empowering people. Strengthening families. Building purposeful futures.",
-    "eyebrow": "Purpose-led growth, together",
-    "intro": "Edified Services supports young people, parents, learners and organisations through thoughtful coaching, counselling, training and mentorship.",
+    "title": "Raising an Edified Generation Living out Its Purpose",
+    "eyebrow": "The Hub for Children and Youth Wellness",
+    "intro": "Edified Services supports families of children and youth aged 8–25 years through life coaching, mentorship and other wellness services.",
     "body": "",
     "published": true
   },
@@ -17,17 +17,17 @@
   },
   {
     "slug": "about-us",
-    "title": "Growth becomes meaningful when it is understood, supported and shared.",
-    "eyebrow": "About Edified",
-    "intro": "Edified Services is presented as a people-development organisation serving individuals, families, learning communities and organisations.",
+    "title": "About Edified Services",
+    "eyebrow": "Our purpose",
+    "intro": "Our vision is to be the Empowerment Entity of Choice for Children, Youth and Caregivers.",
     "body": "",
     "published": true
   },
   {
     "slug": "our-services",
-    "title": "Support for the places where people live, learn and lead.",
+    "title": "Services for Children, Youth and Families",
     "eyebrow": "Our services",
-    "intro": "Explore distinct coaching, counselling, training and consultancy services, each described without unsupported promises or one-size-fits-all outcomes.",
+    "intro": "Explore life coaching, psychological counseling, parenting workshops, talent development, leadership, institutional coaching, nutrition consultancy, mediation, and bee keeping products.",
     "body": "",
     "published": true
   }
