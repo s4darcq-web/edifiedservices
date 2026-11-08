@@ -152,6 +152,7 @@ const navItems = [
   { label: "Courses", href: "/courses/" },
   { label: "About Us", href: "/about-us/" },
   { label: "Our Services", href: "/our-services/" },
+  { label: "Support Us", href: "/support-us/" },
 ]
 const customNavItems = initialPages
   .filter(
@@ -545,7 +546,7 @@ export function HomePage({ page }: { page: PageContent }) {
         "Raising awareness of education needs and helping individuals and partners find a way to seek or offer support.",
       icon: "school",
       action: "Ask about support",
-      href: "/our-services/#enquire",
+      href: "/support-us/#school-fund",
     },
     {
       title: "Edified Sports Team",
@@ -553,7 +554,7 @@ export function HomePage({ page }: { page: PageContent }) {
         "Building visibility for the team and welcoming publicity and sponsorship conversations.",
       icon: "spark",
       action: "Discuss sponsorship",
-      href: "/our-services/#enquire",
+      href: "/support-us/#sports-team",
     },
   ]
   const audiences = [
@@ -1455,6 +1456,220 @@ export function ServicesPage({ page }: { page: PageContent }) {
           </div>
         </div>
       </section>
+    </main>
+  )
+}
+
+export function SupportPage() {
+  const supportCards = [
+    {
+      title: "The Edified School Fund",
+      icon: "heart",
+      variant: "mint",
+      href: "#school-fund",
+    },
+    {
+      title: "The Edified Sports Team",
+      icon: "spark",
+      variant: "teal",
+      href: "#sports-team",
+    },
+    {
+      title: "Volunteer & Community",
+      icon: "people",
+      variant: "gold",
+      href: "#volunteer",
+    },
+  ]
+
+  return (
+    <main id="main" className="support-page">
+      <div className="support-page__shell">
+        <Breadcrumbs items={[{ label: "Support Us" }]} />
+        <section className="support-hero">
+          <div className="support-hero__backdrop">
+            <img
+              src={photos.community}
+              alt="Children and caregivers standing together in support"
+            />
+          </div>
+          <div className="container support-hero__content">
+            <div className="support-hero__copy">
+              <span className="eyebrow eyebrow--light">Make a difference</span>
+              <h1>
+                Donations
+                <br />
+                Changes Lives
+              </h1>
+              <p>
+                Help build brighter futures through education, awareness,
+                volunteer support and sponsorship opportunities.
+              </p>
+              <ButtonLink href="#get-in-touch" variant="light">
+                Get involved
+              </ButtonLink>
+            </div>
+          </div>
+        </section>
+
+        <div className="container support-cards">
+          {supportCards.map((card) => (
+            <a
+              key={card.title}
+              href={card.href}
+              className={`support-card support-card--${card.variant}`}
+            >
+              <span className="support-card__icon">
+                <Icon name={card.icon as IconName} size={20} />
+              </span>
+              <h3>{card.title}</h3>
+              <span className="support-card__arrow">
+                <Icon name="arrow" size={18} />
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <section className="section support-story">
+          <div className="container support-story__grid">
+            <div className="support-story__media">
+              <img
+                src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80"
+                alt="A child being supported by a caregiver"
+              />
+            </div>
+            <div className="support-story__content">
+              <span className="eyebrow">The Edified mission</span>
+              <h2>Help create a generation living out its purpose.</h2>
+              <p>
+                Edified Services supports children, youth and caregivers. Your
+                support can help raise awareness, build partnerships and open
+                conversations about education, sport and wellbeing.
+              </p>
+              <div id="volunteer" className="support-story__list">
+                <div>
+                  <span className="support-story__bullet">
+                    <Icon name="check" size={16} />
+                  </span>
+                  <div>
+                    <strong>Become a Volunteer</strong>
+                    <small>
+                      Ask about ways to contribute time, skills or community
+                      connections.
+                    </small>
+                  </div>
+                </div>
+                <div>
+                  <span className="support-story__bullet">
+                    <Icon name="spark" size={16} />
+                  </span>
+                  <div>
+                    <strong>Raise Awareness</strong>
+                    <small>
+                      Help share Edified’s work and connect people with
+                      opportunities to support.
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div className="support-story__cta">
+                <ButtonLink href="#get-in-touch" variant="secondary">
+                  Ask about volunteering
+                </ButtonLink>
+                <p>
+                  Every offer of support starts with a conversation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section support-initiatives">
+          <div className="container">
+            <div className="section-heading">
+              <span className="eyebrow">Our support initiatives</span>
+              <h2>Two meaningful ways to make an impact.</h2>
+              <p>
+                Learn more about the Edified School Fund and Sports Team, and
+                contact us to discuss awareness, publicity, sponsorship or
+                another way to get involved.
+              </p>
+            </div>
+            <div className="support-initiatives__grid">
+              <article id="school-fund" className="support-initiative support-initiative--school">
+                <span className="support-initiative__icon">
+                  <Icon name="school" size={26} />
+                </span>
+                <span className="eyebrow">Education support</span>
+                <h3>The Edified School Fund</h3>
+                <p>
+                  Help create awareness of education needs and connect with
+                  people interested in seeking or offering support. Get in
+                  touch to discuss the fund and how you can help share its
+                  purpose.
+                </p>
+                <a
+                  className="text-link"
+                  href="mailto:edifiedservices.company@gmail.com?subject=Edified%20School%20Fund"
+                >
+                  Ask about the School Fund <Icon name="arrow" size={17} />
+                </a>
+              </article>
+              <article id="sports-team" className="support-initiative support-initiative--sports">
+                <span className="support-initiative__icon">
+                  <Icon name="spark" size={26} />
+                </span>
+                <span className="eyebrow">Publicity & sponsorship</span>
+                <h3>The Edified Sports Team</h3>
+                <p>
+                  Help build visibility for the team and start a conversation
+                  about publicity or sponsorship. Contact Edified to discuss
+                  current opportunities and confirm practical details.
+                </p>
+                <a
+                  className="text-link"
+                  href="mailto:edifiedservices.company@gmail.com?subject=Edified%20Sports%20Team%20Sponsorship"
+                >
+                  Discuss sponsorship <Icon name="arrow" size={17} />
+                </a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="support-commitment">
+          <div className="container">
+            <span className="eyebrow">Our promise</span>
+            <h2>
+              Our fingerprints on the lives we touch never fade.
+            </h2>
+          </div>
+        </section>
+
+        <section id="get-in-touch" className="support-contact">
+          <div className="container support-contact__inner">
+            <div>
+              <span className="eyebrow eyebrow--light">Let’s work together</span>
+              <h2>Have an idea or want to learn more?</h2>
+              <p>
+                Reach out to Edified Services to discuss the School Fund, the
+                Sports Team, or another way to support young people.
+              </p>
+            </div>
+            <div className="support-contact__actions">
+              <a className="button button--light" href="tel:+254751687372">
+                Call +254 751 687 372
+              </a>
+              <a
+                className="button button--secondary"
+                href="mailto:edifiedservices.company@gmail.com?subject=Supporting%20Edified%20Services"
+              >
+                Email the team <Icon name="arrow" size={18} />
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
   )
 }
